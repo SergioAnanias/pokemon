@@ -10,22 +10,24 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <script>
-        function estilos() {
-            $('img').css('background-color', '#963c3c')
-            $('img').css('border-radius', '100px')
-            $('img').css('border', 'black solid 2px')
-            $('img').addClass('m-2 col-1')
+        function estilosIconos() {
+            $('img').addClass('m-2 col-1 iconos')
         }
+        function estiloTarjeta() {
+            $('#data').addClass("tarjeta")
+        }
+
         $(document).ready(function () {
             for (let i = 1; i <= 151; i++) {
                 $('.pokemones').append(`<img src="http://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i}.png" class="pokemon" id="${i}">`);
-                estilos();
+                estilosIconos();
             }
-            $(this).one('click', function(){
-                    $('#tags').toggleClass('d-none', 'd-inline')
-                })
+            $(this).one('click', function () {
+                $('#tags').toggleClass('d-none', 'd-inline')
+            })
             $('.pokemon').on('click', function () {
                 const id = $(this).attr('id')
+                estiloTarjeta();
                 $.get(`https://pokeapi.co/api/v2/pokemon/${id}`, function (data) {
                     console.log(data)
                     $('#namenumber').html(`<h1 style="text-transform: capitalize; text-align:center">${data.name}#${data.id}</h1>`);
@@ -47,10 +49,35 @@
             })
         });
     </script>
+    <style>
+        body{
+            background-image: url("img/bg.jpg");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100%;
+        }
+        .iconos{
+            background-image: linear-gradient( 181deg,  rgba(225,109,245,1) 6.9%, rgba(78,248,231,1) 112.8% );
+            border-radius: 100px;
+            border:black solid 2px;
+        }
+        .tarjeta{
+            background-image: url("img/pokedex.png");
+            background-repeat: no-repeat;
+            background-size: 100%;
+            max-height: 700px;
+            max-width: 600px;
+            border-radius: 20px;
+            border: black solid 2px;
+            padding: 40px;
+            position: sticky;
+            top: 20px;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="row justify-content-md-center">
+    <div class="row justify-content-md-center gx-0">
         <h1 class="text-center">Pokemon
         </h1>
         <h4 class="text-muted h4 text-center">Primera generación</h4>
