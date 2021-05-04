@@ -14,23 +14,62 @@
             $('img').css('background-color', '#963c3c')
             $('img').css('border-radius', '100px')
             $('img').css('border', 'black solid 2px')
-            $('img').addClass('m-2 p-3 col-1')
+            $('img').addClass('m-2 col-1')
         }
         $(document).ready(function () {
             for (let i = 1; i <= 151; i++) {
-                $('.pokemon').append(`<img src="http://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i}.png">`);
+                $('.pokemones').append(`<img src="http://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i}.png" class="pokemon" id="${i}">`);
                 estilos();
             }
+            $(this).one('click', function(){
+                    $('#tags').toggleClass('d-none', 'd-inline')
+                })
+            $('.pokemon').on('click', function () {
+                const id = $(this).attr('id')
+                $.get(`https://pokeapi.co/api/v2/pokemon/${id}`, function (data) {
+                    console.log(data)
+                    $('#namenumber').html(`<h1 style="text-transform: capitalize; text-align:center">${data.name}#${data.id}</h1>`);
+                    $('#snormal').html(`<img src="${data.sprites.front_default}" class="rounded mx-auto" height=150px>`);
+                    $('#sshiny').html(`<img src="${data.sprites.front_shiny}" class="rounded mx-auto" height=150px>`);
+                    $('#types').html('<h3>Types</h3>')
+                    for (let i = 0; i < data.types.length; i++) {
+                        $('#types').append(`<li style="text-transform: capitalize">${data.types[i].type.name}</li>`)
+                    }
+                    $('#height').html('<h3>Height</h3>')
+                    $('#height').append(`<li>${data.height * 10} cm.</li>`);
+                    $('#weight').html('<h3>Weight</h3>');
+                    $('#weight').append(`<li>${data.weight / 10} kg.</li>`);
+                    $('#stats').html('<h3>Base stats</h3>')
+                    for (let i = 0; i < data.stats.length; i++) {
+                        $('#stats').append(`<li style="text-transform: capitalize">${data.stats[i].stat.name} : ${data.stats[i].base_stat}</li>`)
+                    }
+                })
+            })
         });
     </script>
 </head>
 
 <body>
-    <div class="container">
+    <div class="row justify-content-md-center">
         <h1 class="text-center">Pokemon
         </h1>
         <h4 class="text-muted h4 text-center">Primera generación</h4>
-        <div class="pokemon">
+        <div class="pokemones col-8">
+        </div>
+        <div class="col-4" id="data">
+            <div id="namenumber"></div>
+            <div class="row offset-2" id="sprites">
+                <div id="snormal" class="col-4 d-inline-block"></div>
+                <div id="sshiny" class="col-4 d-inline-block"></div>
+            </div>
+            <div class="row offset-2 d-none" id="tags">
+                <div class="col-4 offset-1">Normal</div>
+                <div class="col-4">Shiny</div>
+            </div>
+            <div id="types"></div>
+            <div id="height"></div>
+            <div id="weight"></div>
+            <div id="stats"></div>
 
         </div>
     </div>
